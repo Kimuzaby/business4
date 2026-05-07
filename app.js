@@ -121,8 +121,8 @@ function cargarHorariosDisponibles(fecha) {
         
         const idReserva = `${canchaActual}_${fecha}_${hora}`;
 
-        // Verificar si existe en la "base de datos"
-        if (reservasGlobales.includes(idReserva)) {
+        // VERIFICACIÓN CORREGIDA: Ahora busca dentro de la propiedad "bloqueo" del objeto
+        if (reservasGlobales.some(r => r.bloqueo === idReserva)) {
             btnHora.classList.add("hora-btn", "ocupada");
             btnHora.disabled = true;
             btnHora.innerText += " (Ocupado)";
