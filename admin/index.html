@@ -30,7 +30,7 @@
                 <table id="tabla-reservas">
                     <thead>
                         <tr>
-                            <th>ID Reserva</th>
+                            <th>ID</th>
                             <th>Cliente</th>
                             <th>Cancha</th>
                             <th>Fecha</th>
@@ -43,6 +43,44 @@
                 </table>
             </div>
         </section>
+
+        <div id="modal-editar" class="modal hidden">
+            <div class="modal-content">
+                <h3>Editar Reserva <span id="txt-edit-id"></span></h3>
+                <form id="form-editar">
+                    <input type="hidden" id="edit-id">
+                    
+                    <label>Cliente:</label>
+                    <input type="text" id="edit-cliente" required>
+                    
+                    <label>Cancha:</label>
+                    <select id="edit-cancha" required>
+                        <option value="Cancha Principal 11v11">Principal 11v11</option>
+                        <option value="Cancha 7v7 A">7v7 A</option>
+                        <option value="Cancha 7v7 B">7v7 B</option>
+                    </select>
+
+                    <label>Fecha:</label>
+                    <input type="date" id="edit-fecha" required>
+
+                    <label>Hora:</label>
+                    <select id="edit-hora" required>
+                        <option value="16:00">16:00 - 17:00</option>
+                        <option value="17:00">17:00 - 18:00</option>
+                        <option value="18:00">18:00 - 19:00</option>
+                        <option value="19:00">19:00 - 20:00</option>
+                        <option value="20:00">20:00 - 21:00</option>
+                        <option value="21:00">21:00 - 22:00</option>
+                        <option value="22:00">22:00 - 23:00</option>
+                    </select>
+
+                    <div class="modal-buttons">
+                        <button type="submit" class="btn-guardar">Guardar Cambios</button>
+                        <button type="button" class="btn-cancelar" onclick="cerrarModal()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </main>
 
     <script src="admin.js"></script>
