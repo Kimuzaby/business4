@@ -41,7 +41,16 @@ function cargarTablaReservas() {
     const tbody = document.getElementById("lista-reservas");
     tbody.innerHTML = "";
 
-    let reservas = JSON.parse(localStorage.getItem('reservasEurosoccer')) || [];
+    // Obtenemos los datos crudos
+    let reservasRaw = JSON.parse(localStorage.getItem('reservasEurosoccer')) || [];
+
+    // LIMPIEZA AUTOMÁTICA: Filtramos para quedarnos SOLO con reservas que sean objetos y tengan un ID válido
+    let reservas = reservasRaw.filter(r => r && typeof r === 'object' && r.id);
+
+    // Si detectamos que había datos corruptos (undefined), actualizamos el localStorage para borrarlos para siempre
+    if (reservasRaw.length !== reservas.length) {
+        localStorage.setItem('reservasEurosoccer', JSON.stringify(reservas));
+    }
 
     if (reservas.length === 0) {
         tbody.innerHTML = "<tr><td colspan='6' style='text-align:center;'>No hay reservas registradas.</td></tr>";
