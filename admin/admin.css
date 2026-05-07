@@ -1,0 +1,27 @@
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+body { background-color: #f1f5f9; color: #1e293b; }
+.hidden { display: none !important; }
+
+header {
+    background-color: #0f172a; color: white; padding: 20px;
+    display: flex; justify-content: space-between; align-items: center;
+}
+header button {
+    background-color: #ef4444; color: white; border: none;
+    padding: 8px 15px; border-radius: 4px; cursor: pointer;
+}
+
+main { padding: 40px; max-width: 1000px; margin: 0 auto; }
+
+.login-box {
+    background: white; padding: 30px; border-radius: 8px;
+    max-width: 400px; margin: 50px auto; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center;
+}
+.login-box input { width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #ccc; }
+.login-box button { width: 100%; background: #22c55e; color: white; padding: 10px; border: none; cursor: pointer; }
+
+.table-container { background: white; border-radius: 8px; overflow-x: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+table { width: 100%; border-collapse: collapse; text-align: left; }
+th, td { padding: 15px; border-bottom: 1px solid #e2e8f0; }
+th { background-color: #f8fafc; }
+.btn-eliminar { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; }

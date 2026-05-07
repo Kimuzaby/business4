@@ -3,99 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eurosoccer | Reservas</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Admin - Eurosoccer</title>
+    <link rel="stylesheet" href="admin.css">
 </head>
 <body>
-
-    <header class="hero">
-        <div class="hero-content">
-            <h1>EUROSOCCER PENE</h1>
-            <p class="tagline">¡Dónde el fútbol es pasión gay!</p>
-            <div class="contact-info">
-                <span>📍 San Martín, El Salvador</span> | 
-                <span>📞 7855 4341</span> | 
-                <a href="http://eurosoccer.com.sv" target="_blank">eurosoccer.com.sv</a>
-            </div>
-        </div>
+    <header>
+        <h1>Eurosoccer | Gestión de Reservas</h1>
+        <button id="btn-logout" class="hidden" onclick="cerrarSesion()">Cerrar Sesión</button>
     </header>
 
     <main>
-        <section class="canchas-info">
-            <h2>Nuestras Instalaciones</h2>
-            <div class="cancha-cards">
-                <div class="card">
-                    <div class="placeholder-img">📷 Foto 11v11</div>
-                    <h3>Cancha Principal</h3>
-                    <p>Fútbol 11. Espacio amplio para ligas y torneos oficiales.</p>
-                </div>
-                <div class="card">
-                    <div class="placeholder-img">📷 Foto 7v7 A</div>
-                    <h3>Cancha 7v7 (A)</h3>
-                    <p>Grama sintética de alta calidad y excelente iluminación.</p>
-                </div>
-                <div class="card">
-                    <div class="placeholder-img">📷 Foto 7v7 B</div>
-                    <h3>Cancha 7v7 (B)</h3>
-                    <p>Ideal para partidos rápidos entre amigos después del trabajo.</p>
-                </div>
-            </div>
+        <section id="login-section" class="login-box">
+            <h2>Acceso Administrativo</h2>
+            <form id="form-login">
+                <input type="password" id="admin-pass" placeholder="Contraseña de Admin" required>
+                <button type="submit">Ingresar</button>
+                <p id="login-error" class="hidden" style="color: red; margin-top: 10px;">Contraseña incorrecta</p>
+            </form>
         </section>
 
-        <section class="reserva-interactiva">
-            <h2>Paso 1: Selecciona tu Cancha</h2>
-            <div class="croquis-container">
-                <div class="cancha-sketch grande" onclick="seleccionarCancha('Cancha Principal 11v11')">
-                    <div class="linea-media"></div>
-                    <div class="circulo-central"></div>
-                    <span>Principal 11v11</span>
-                </div>
-                <div class="cancha-sketch pequena" onclick="seleccionarCancha('Cancha 7v7 A')">
-                    <div class="linea-media"></div>
-                    <div class="circulo-central"></div>
-                    <span>7v7 A</span>
-                </div>
-                <div class="cancha-sketch pequena" onclick="seleccionarCancha('Cancha 7v7 B')">
-                    <div class="linea-media"></div>
-                    <div class="circulo-central"></div>
-                    <span>7v7 B</span>
-                </div>
+        <section id="dashboard-section" class="hidden">
+            <div class="dashboard-header">
+                <h2>Turnos Activos</h2>
             </div>
-        </section>
-
-        <section id="panel-reserva" class="panel-reserva hidden">
-            <h2 id="titulo-panel">Disponibilidad: <span id="nombre-cancha-seleccionada"></span></h2>
-            
-            <div class="dashboard-reserva">
-                <div class="calendario-container">
-                    <div class="calendario-header">
-                        <button onclick="cambiarMes(-1)">&#10094;</button>
-                        <h3 id="mes-anio"></h3>
-                        <button onclick="cambiarMes(1)">&#10095;</button>
-                    </div>
-                    <div class="dias-semana">
-                        <span>Dom</span><span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span>
-                    </div>
-                    <div id="dias-calendario" class="dias-calendario"></div>
-                </div>
-
-                <div class="horas-container">
-                    <h3>Horarios para el <span id="fecha-seleccionada">...</span></h3>
-                    <p class="precio-nota">Precio por hora: <strong>$20.00</strong></p>
-                    <div id="grid-horas" class="grid-horas">
-                        <p class="instruccion">Selecciona un día en el calendario para ver las horas.</p>
-                    </div>
-
-                    <form id="form-confirmacion" class="hidden">
-                        <input type="text" id="nombre-cliente" placeholder="Tu Nombre / Equipo" required>
-                        <button type="submit" class="btn-confirmar">Reservar Turno</button>
-                    </form>
-                    <div id="mensaje-feedback"></div>
-                </div>
+            <div class="table-container">
+                <table id="tabla-reservas">
+                    <thead>
+                        <tr>
+                            <th>ID Reserva</th>
+                            <th>Cliente</th>
+                            <th>Cancha</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-reservas">
+                        </tbody>
+                </table>
             </div>
         </section>
     </main>
 
-    <script src="app.js"></script>
+    <script src="admin.js"></script>
 </body>
 </html>

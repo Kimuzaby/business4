@@ -147,6 +147,11 @@ function elegirHora(hora, botonHtml) {
     document.getElementById("form-confirmacion").classList.remove("hidden");
 }
 
+// Función para generar ID único
+function generarIdReserva() {
+    return 'RES-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+}
+
 // 4. Procesar la Reserva Final
 document.getElementById("form-confirmacion").addEventListener("submit", function(e) {
     e.preventDefault();
@@ -154,27 +159,41 @@ document.getElementById("form-confirmacion").addEventListener("submit", function
     if (!diaSeleccionado || !horaSeleccionada) return;
 
     let nombre = document.getElementById("nombre-cliente").value;
-    let idReserva = `${canchaActual}_${diaSeleccionado}_${horaSeleccionada}`;
+    let idUnico = generarIdReserva();
+    let idBloqueo = `${canchaActual}_${diaSeleccionado}_${horaSeleccionada}`;
 
-    // "Escribir" en la Base de Datos
+    // Escribir en la Base de Datos (Local por ahora)
     let reservasGlobales = JSON.parse(localStorage.getItem('reservasEurosoccer')) || [];
     
-    // Doble verificación por si alguien más reservó mientras mirábamos
-    if (reservasGlobales.includes(idReserva)) {
+    // Verificar si la hora ya fue tomada
+    if (reservasGlobales.some(r => r.bloqueo === idBloqueo)) {
         alert("Lo sentimos, alguien acaba de reservar este turno.");
         cargarHorariosDisponibles(diaSeleccionado);
         return;
     }
 
-    reservasGlobales.push(idReserva);
+    // Estructura del objeto para que el Admin lo pueda leer bien
+    let nuevaReserva = {
+        id: idUnico,
+        bloqueo: idBloqueo,
+        cancha: canchaActual,
+        fecha: diaSeleccionado,
+        hora: horaSeleccionada,
+        cliente: nombre,
+        estado: "Confirmada"
+    };
+
+    reservasGlobales.push(nuevaReserva);
     localStorage.setItem('reservasEurosoccer', JSON.stringify(reservasGlobales));
 
     const fb = document.getElementById("mensaje-feedback");
     fb.style.color = "var(--accent-green)";
-    fb.innerText = `¡Reserva confirmada! Turno de ${horaSeleccionada} a nombre de ${nombre}.`;
+    fb.innerHTML = `¡Reserva confirmada!<br>Tu código es: <strong>${idUnico}</strong><br>Guárdalo por si necesitas modificar tu turno.`;
 
-    // Recargar los botones para que se muestre en rojo inmediatamente
     document.getElementById("form-confirmacion").classList.add("hidden");
     document.getElementById("nombre-cliente").value = "";
     cargarHorariosDisponibles(diaSeleccionado);
 });
+
+// IMPORTANTE: En tu función cargarHorariosDisponibles() en app.js, asegúrate de cambiar la verificación a:
+// if (reservasGlobales.some(r => r.bloqueo === idReserva)) {
