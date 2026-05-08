@@ -14,8 +14,7 @@
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-const PASSWORD_ADMIN = "euro2026"; 
-let reservasAdminGlobal = []; // Memoria temporal para buscar datos a editar
+
 
 // ==========================================
 // 1. GESTIÓN DE SESIÓN
