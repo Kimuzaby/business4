@@ -1,99 +1,88 @@
 // ==========================================
-// 0. CONFIGURACIÓN DE FIREBASE (PEGA LA MISMA DE APP.JS)
+// 0. CONFIGURACIÓN DE FIREBASE
 // ==========================================
-// Your web app's Firebase configuration
-  const firebaseConfig = {
+const firebaseConfig = {
     apiKey: "AIzaSyB0aE3W6C7I56hyQ6_m0fTgWhOnU6sE_Kk",
     authDomain: "eurosoccer-95b4f.firebaseapp.com",
     projectId: "eurosoccer-95b4f",
     storageBucket: "eurosoccer-95b4f.firebasestorage.app",
     messagingSenderId: "254069018108",
     appId: "1:254069018108:web:50e888990856f19a0cb679"
-  };
+};
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-
+let reservasAdminGlobal = [];
 
 // ==========================================
 // 1. GESTIÓN DE SESIÓN
 // ==========================================
-document.addEventListener("DOMContentLoaded", () => {
-    if (localStorage.getItem("euroAdminLogueado") === "true") {
-        mostrarDashboard();
-    }
-});
-
-// 1. Escuchar si el usuario ya tiene sesión iniciada
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-        mostrarDashboard(); // Si ya hay sesión, encendemos la pantalla
+        mostrarDashboard();
     } else {
-        cerrarSesionUI(); // Si no, mostramos el login
+        cerrarSesionUI();
     }
 });
 
-// 2. Proceso de Login con Firebase
 document.getElementById("form-login").addEventListener("submit", function(e) {
     e.preventDefault();
-    
-    // Aquí pon el correo que registraste en la consola de Firebase
-    const email = "erickxavier.caballero@gmail.com"; 
+    const email = "erickxavier.caballero@gmail.com";
     const pass = document.getElementById("admin-pass").value;
-
     const btn = e.target.querySelector('button');
-    btn.innerText = "Verificando...";
+    const errorEl = document.getElementById("login-error");
 
-    // Firebase valida la contraseña en sus servidores
+    btn.innerText = "Verificando...";
+    btn.disabled = true;
+    errorEl.classList.add("hidden");
+
     firebase.auth().signInWithEmailAndPassword(email, pass)
-        .then((userCredential) => {
-            // El éxito activa automáticamente el onAuthStateChanged de arriba
+        .then(() => {
             btn.innerText = "Ingresar";
+            btn.disabled = false;
         })
-        .catch((error) => {
-            document.getElementById("login-error").innerText = "Credenciales incorrectas";
-            document.getElementById("login-error").classList.remove("hidden");
+        .catch(() => {
+            errorEl.classList.remove("hidden");
             btn.innerText = "Ingresar";
+            btn.disabled = false;
         });
 });
 
-// 3. ESTA SE QUEDA EXACTAMENTE IGUAL
 function mostrarDashboard() {
     document.getElementById("login-section").classList.add("hidden");
     document.getElementById("dashboard-section").classList.remove("hidden");
     document.getElementById("btn-logout").classList.remove("hidden");
     document.getElementById("admin-pass").value = "";
     document.getElementById("login-error").classList.add("hidden");
-    
-    // Iniciar escucha de la base de datos
     escucharReservas();
 }
 
-// 4. Cerrar sesión en Firebase
 function cerrarSesion() {
-    firebase.auth().signOut().then(() => {
-        // Al cerrar, el onAuthStateChanged de arriba detecta el cambio y oculta todo
-    });
+    firebase.auth().signOut();
 }
 
-// 5. Apagar las luces (Ocultar dashboard)
 function cerrarSesionUI() {
     document.getElementById("login-section").classList.remove("hidden");
     document.getElementById("dashboard-section").classList.add("hidden");
     document.getElementById("btn-logout").classList.add("hidden");
 }
+
 // ==========================================
 // 2. LECTURA EN TIEMPO REAL DESDE FIREBASE
 // ==========================================
 function escucharReservas() {
     db.collection("reservas").onSnapshot((querySnapshot) => {
         reservasAdminGlobal = [];
-        const tbody = document.edit-hora("lista-reservas");
+        const tbody = document.getElementById("lista-reservas");
         tbody.innerHTML = "";
 
+        // Update badge
+        const badge = document.getElementById("conteo-reservas");
+        if (badge) badge.innerText = `${querySnapshot.size} reserva${querySnapshot.size !== 1 ? 's' : ''}`;
+
         if (querySnapshot.empty) {
-            tbody.innerHTML = "<tr><td colspan='6' style='text-align:center;'>No hay reservas registradas.</td></tr>";
+            tbody.innerHTML = "<tr><td colspan='6' style='text-align:center; padding:30px; color:var(--muted);'>No hay reservas registradas.</td></tr>";
             return;
         }
 
@@ -102,7 +91,10 @@ function escucharReservas() {
         });
 
         // Ordenar por fecha cronológica
-        reservasAdminGlobal.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+        reservasAdminGlobal.sort((a, b) => {
+            if (a.fecha !== b.fecha) return new Date(a.fecha) - new Date(b.fecha);
+            return a.hora.localeCompare(b.hora);
+        });
 
         reservasAdminGlobal.forEach(reserva => {
             const fila = document.createElement("tr");
@@ -129,7 +121,6 @@ async function eliminarReserva(idReserva) {
     if (confirm(`¿Confirmar cancelación de la reserva ${idReserva}?`)) {
         try {
             await db.collection("reservas").doc(idReserva).delete();
-            // No necesitamos recargar la tabla manualmente porque el 'onSnapshot' lo hará instantáneamente.
         } catch (error) {
             alert("Error al intentar eliminar. Revisa tu conexión.");
         }
@@ -137,8 +128,7 @@ async function eliminarReserva(idReserva) {
 }
 
 function abrirModalEditar(idReserva) {
-    let reservaActual = reservasAdminGlobal.find(r => r.id === idReserva);
-
+    const reservaActual = reservasAdminGlobal.find(r => r.id === idReserva);
     if (reservaActual) {
         document.getElementById("edit-id").value = reservaActual.id;
         document.getElementById("txt-edit-id").innerText = reservaActual.id;
@@ -154,19 +144,22 @@ function cerrarModal() {
     document.getElementById("modal-editar").classList.add("hidden");
 }
 
+// Close modal clicking backdrop
+document.getElementById("modal-editar").addEventListener("click", function(e) {
+    if (e.target === this) cerrarModal();
+});
+
 document.getElementById("form-editar").addEventListener("submit", async function(e) {
     e.preventDefault();
 
-    let idReserva = document.getElementById("edit-id").value;
-    let nuevoCliente = document.getElementById("edit-cliente").value;
-    let nuevaCancha = document.getElementById("edit-cancha").value;
-    let nuevaFecha = document.getElementById("edit-fecha").value;
-    let nuevaHora = document.getElementById("edit-hora").value;
-    
-    let nuevoBloqueo = `${nuevaCancha}_${nuevaFecha}_${nuevaHora}`;
+    const idReserva = document.getElementById("edit-id").value;
+    const nuevoCliente = document.getElementById("edit-cliente").value;
+    const nuevaCancha = document.getElementById("edit-cancha").value;
+    const nuevaFecha = document.getElementById("edit-fecha").value;
+    const nuevaHora = document.getElementById("edit-hora").value;
+    const nuevoBloqueo = `${nuevaCancha}_${nuevaFecha}_${nuevaHora}`;
 
-    // Validar conflicto de horarios
-    let conflicto = reservasAdminGlobal.some(r => r.bloqueo === nuevoBloqueo && r.id !== idReserva);
+    const conflicto = reservasAdminGlobal.some(r => r.bloqueo === nuevoBloqueo && r.id !== idReserva);
     if (conflicto) {
         alert("¡Error! La cancha seleccionada ya está reservada en esa fecha y hora.");
         return;
@@ -175,7 +168,8 @@ document.getElementById("form-editar").addEventListener("submit", async function
     try {
         const btn = e.target.querySelector('.btn-guardar');
         btn.innerText = "Guardando...";
-        
+        btn.disabled = true;
+
         await db.collection("reservas").doc(idReserva).update({
             cliente: nuevoCliente,
             cancha: nuevaCancha,
@@ -186,8 +180,11 @@ document.getElementById("form-editar").addEventListener("submit", async function
 
         cerrarModal();
         btn.innerText = "Guardar Cambios";
-        alert("Reserva actualizada con éxito.");
+        btn.disabled = false;
     } catch (error) {
         alert("Error al actualizar la base de datos.");
+        const btn = e.target.querySelector('.btn-guardar');
+        btn.innerText = "Guardar Cambios";
+        btn.disabled = false;
     }
 });

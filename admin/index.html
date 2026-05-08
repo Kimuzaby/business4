@@ -3,28 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Eurosoccer</title>
+    <title>Admin – Eurosoccer</title>
     <link rel="stylesheet" href="admin.css">
 </head>
 <body>
+
     <header>
-        <h1>Eurosoccer | Gestión de Reservas</h1>
-        <button id="btn-logout" class="hidden" onclick="cerrarSesion()">Cerrar Sesión</button>
+        <div class="header-brand">
+            <span class="brand-dot"></span>
+            <span class="brand-name">Eurosoccer</span>
+            <span class="brand-label">Admin</span>
+        </div>
+        <button id="btn-logout" class="hidden" onclick="cerrarSesion()">Cerrar sesión</button>
     </header>
 
     <main>
+
         <section id="login-section" class="login-box">
+            <div class="login-icon">⚽</div>
             <h2>Acceso Administrativo</h2>
+            <p class="login-sub">Introduce tu contraseña para continuar</p>
             <form id="form-login">
-                <input type="password" id="admin-pass" placeholder="Contraseña de Admin" required>
+                <input type="password" id="admin-pass" placeholder="Contraseña" required autocomplete="current-password">
                 <button type="submit">Ingresar</button>
-                <p id="login-error" class="hidden" style="color: red; margin-top: 10px;">Contraseña incorrecta</p>
+                <p id="login-error" class="hidden error-msg">Credenciales incorrectas. Intenta de nuevo.</p>
             </form>
         </section>
 
         <section id="dashboard-section" class="hidden">
             <div class="dashboard-header">
                 <h2>Turnos Activos</h2>
+                <span id="conteo-reservas" class="badge">0 reservas</span>
             </div>
             <div class="table-container">
                 <table id="tabla-reservas">
@@ -38,49 +47,51 @@
                             <th>Acciones</th>
                         </tr>
                     </thead>
-                    <tbody id="lista-reservas">
-                        </tbody>
+                    <tbody id="lista-reservas"></tbody>
                 </table>
             </div>
         </section>
 
         <div id="modal-editar" class="modal hidden">
             <div class="modal-content">
-                <h3>Editar Reserva <span id="txt-edit-id"></span></h3>
+                <div class="modal-header">
+                    <h3>Editar Reserva <span id="txt-edit-id" class="modal-id"></span></h3>
+                    <button class="modal-close" onclick="cerrarModal()">✕</button>
+                </div>
                 <form id="form-editar">
                     <input type="hidden" id="edit-id">
-                    
-                    <label>Cliente:</label>
+
+                    <label>Cliente</label>
                     <input type="text" id="edit-cliente" required>
-                    
-                    <label>Cancha:</label>
+
+                    <label>Cancha</label>
                     <select id="edit-cancha" required>
                         <option value="Cancha Principal 11v11">Principal 11v11</option>
                         <option value="Cancha 7v7 A">7v7 A</option>
                         <option value="Cancha 7v7 B">7v7 B</option>
                     </select>
 
-                    <label>Fecha:</label>
+                    <label>Fecha</label>
                     <input type="date" id="edit-fecha" required>
 
-                    <label>Hora:</label>
+                    <label>Hora</label>
                     <select id="edit-hora" required>
-                        <option value="08:00">8:00 AM - 9:00 AM</option>
-                        <option value="09:00">9:00 AM - 10:00 AM</option>
-                        <option value="10:00">10:00 AM - 11:00 AM</option>
-                        <option value="11:00">11:00 AM - 12:00 PM</option>
-                        <option value="12:00">12:00 PM - 1:00 PM</option>
-                        <option value="13:00">1:00 PM - 2:00 PM</option>
-                        <option value="14:00">2:00 PM - 3:00 PM</option>
-                        <option value="15:00">3:00 PM - 4:00 PM</option>
-                        <option value="16:00">4:00 PM - 5:00 PM</option>
-                        <option value="17:00">5:00 PM - 6:00 PM</option>
-                        <option value="18:00">6:00 PM - 7:00 PM</option>
-                        <option value="19:00">7:00 PM - 8:00 PM</option>
-                        <option value="20:00">8:00 PM - 9:00 PM</option>
-                        <option value="21:00">9:00 PM - 10:00 PM</option>
-                        <option value="22:00">10:00 PM - 11:00 PM</option>
-</select>
+                        <option value="08:00">8:00 AM – 9:00 AM</option>
+                        <option value="09:00">9:00 AM – 10:00 AM</option>
+                        <option value="10:00">10:00 AM – 11:00 AM</option>
+                        <option value="11:00">11:00 AM – 12:00 PM</option>
+                        <option value="12:00">12:00 PM – 1:00 PM</option>
+                        <option value="13:00">1:00 PM – 2:00 PM</option>
+                        <option value="14:00">2:00 PM – 3:00 PM</option>
+                        <option value="15:00">3:00 PM – 4:00 PM</option>
+                        <option value="16:00">4:00 PM – 5:00 PM</option>
+                        <option value="17:00">5:00 PM – 6:00 PM</option>
+                        <option value="18:00">6:00 PM – 7:00 PM</option>
+                        <option value="19:00">7:00 PM – 8:00 PM</option>
+                        <option value="20:00">8:00 PM – 9:00 PM</option>
+                        <option value="21:00">9:00 PM – 10:00 PM</option>
+                        <option value="22:00">10:00 PM – 11:00 PM</option>
+                    </select>
 
                     <div class="modal-buttons">
                         <button type="submit" class="btn-guardar">Guardar Cambios</button>
@@ -89,11 +100,12 @@
                 </form>
             </div>
         </div>
+
     </main>
+
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
     <script src="admin.js"></script>
-    
 </body>
 </html>

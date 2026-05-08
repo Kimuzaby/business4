@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <header class="hero">
         <div class="logo-container">
             <img src="img/logo.jpg" alt="Eurosoccer Logo" class="logo-img">
@@ -25,55 +26,56 @@
     </header>
 
     <main>
+
         <section class="canchas-info">
-    <h2>Nuestras Instalaciones</h2>
-    <div class="cancha-cards">
-        <div class="card">
-            <img src="img/11.webp" alt="Cancha Principal 11v11" class="cancha-img">
-            <h3>Cancha Principal</h3>
-            <p>Fútbol 11. Espacio amplio para ligas y torneos oficiales.</p>
-            <p class="clic-info">Haz clic en el croquis para reservar</p>
-        </div>
-        <div class="card">
-            <img src="img/7A.webp" alt="Cancha 7v7 A" class="cancha-img">
-            <h3>Cancha 7v7 (A)</h3>
-            <p>Grama sintética de alta calidad y excelente iluminación.</p>
-            <p class="clic-info">Haz clic en el croquis para reservar</p>
-        </div>
-        <div class="card">
-            <img src="img/7B.webp" alt="Cancha 7v7 B" class="cancha-img">
-            <h3>Cancha 7v7 (B)</h3>
-            <p>Ideal para partidos rápidos entre amigos después del trabajo.</p>
-            <p class="clic-info">Haz clic en el croquis para reservar</p>
-        </div>
-    </div>
-</section>
+            <h2>Nuestras <span>Instalaciones</span></h2>
+            <div class="cancha-cards">
+                <div class="card">
+                    <img src="img/11.webp" alt="Cancha Principal 11v11" class="cancha-img">
+                    <h3>Cancha Principal</h3>
+                    <p>Fútbol 11. Espacio amplio para ligas y torneos oficiales.</p>
+                    <p class="clic-info">↓ Reservar abajo</p>
+                </div>
+                <div class="card">
+                    <img src="img/7A.webp" alt="Cancha 7v7 A" class="cancha-img">
+                    <h3>Cancha 7v7 (A)</h3>
+                    <p>Grama sintética de alta calidad y excelente iluminación.</p>
+                    <p class="clic-info">↓ Reservar abajo</p>
+                </div>
+                <div class="card">
+                    <img src="img/7B.webp" alt="Cancha 7v7 B" class="cancha-img">
+                    <h3>Cancha 7v7 (B)</h3>
+                    <p>Ideal para partidos rápidos entre amigos después del trabajo.</p>
+                    <p class="clic-info">↓ Reservar abajo</p>
+                </div>
+            </div>
+        </section>
 
         <section class="reserva-interactiva">
-    <h2>Paso 1: Selecciona tu Cancha</h2>
-    <p class="instruccion-croquis">Haz clic en la cancha que deseas reservar</p>
-    <div class="croquis-container">
-        <div class="cancha-sketch grande" onclick="seleccionarCancha('Cancha Principal 11v11')">
-            <div class="linea-media"></div>
-            <div class="circulo-central"></div>
-            <span>Principal 11v11</span>
-        </div>
-        <div class="cancha-sketch pequena" onclick="seleccionarCancha('Cancha 7v7 B')">
-            <div class="linea-media"></div>
-            <div class="circulo-central"></div>
-            <span>7v7 B</span>
-        </div>
-        <div class="cancha-sketch pequena" onclick="seleccionarCancha('Cancha 7v7 A')">
-            <div class="linea-media"></div>
-            <div class="circulo-central"></div>
-            <span>7v7 A</span>
-        </div>
-    </div>
-</section>
+            <h2>Paso 1: <span>Selecciona tu Cancha</span></h2>
+            <p class="instruccion-croquis">Haz clic en la cancha que deseas reservar</p>
+            <div class="croquis-container">
+                <div class="cancha-sketch grande" onclick="seleccionarCancha('Cancha Principal 11v11')">
+                    <div class="linea-media"></div>
+                    <div class="circulo-central"></div>
+                    <span>Principal 11v11</span>
+                </div>
+                <div class="cancha-sketch pequena" onclick="seleccionarCancha('Cancha 7v7 B')">
+                    <div class="linea-media"></div>
+                    <div class="circulo-central"></div>
+                    <span>7v7 B</span>
+                </div>
+                <div class="cancha-sketch pequena" onclick="seleccionarCancha('Cancha 7v7 A')">
+                    <div class="linea-media"></div>
+                    <div class="circulo-central"></div>
+                    <span>7v7 A</span>
+                </div>
+            </div>
+        </section>
 
         <section id="panel-reserva" class="panel-reserva hidden">
             <h2 id="titulo-panel">Disponibilidad: <span id="nombre-cancha-seleccionada"></span></h2>
-            
+
             <div class="dashboard-reserva">
                 <div class="calendario-container">
                     <div class="calendario-header">
@@ -89,21 +91,22 @@
 
                 <div class="horas-container">
                     <h3>Horarios para el <span id="fecha-seleccionada">...</span></h3>
-                    <p class="horario-info">Horario: 8:00 AM - 11:00 PM</p>
+                    <p class="horario-info">⏰ Horario: 8:00 AM – 11:00 PM</p>
                     <p class="precio-nota">Precio por hora: <strong>$20.00</strong></p>
                     <div id="grid-horas" class="grid-horas">
-                        <p class="instruccion">Selecciona un día en el calendario para ver las horas.</p>
+                        <p class="instruccion">Selecciona un día en el calendario para ver los horarios.</p>
                     </div>
-
                     <form id="form-confirmacion" class="hidden">
-                        <input type="text" id="nombre-cliente" placeholder="Tu Nombre / Equipo" required>
-                        <button type="submit" class="btn-confirmar">Reservar Turno</button>
+                        <input type="text" id="nombre-cliente" placeholder="Tu nombre o nombre del equipo" required>
+                        <button type="submit" class="btn-confirmar">✓ Confirmar Reserva</button>
                     </form>
                     <div id="mensaje-feedback"></div>
                 </div>
             </div>
         </section>
+
     </main>
+
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
     <script src="app.js"></script>
