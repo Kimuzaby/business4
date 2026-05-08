@@ -1,18 +1,15 @@
 // ==========================================
 // 0. CONFIGURACIÓN DE FIREBASE
 // ==========================================
-
-// Your web app's Firebase configuration
-  const firebaseConfig = {
+const firebaseConfig = {
     apiKey: "AIzaSyB0aE3W6C7I56hyQ6_m0fTgWhOnU6sE_Kk",
     authDomain: "eurosoccer-95b4f.firebaseapp.com",
     projectId: "eurosoccer-95b4f",
     storageBucket: "eurosoccer-95b4f.firebasestorage.app",
     messagingSenderId: "254069018108",
     appId: "1:254069018108:web:50e888990856f19a0cb679"
-  };
+};
 
-// Inicializar la aplicación y la base de datos
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
@@ -20,24 +17,29 @@ const db = firebase.firestore();
 // 1. VARIABLES Y LECTURA EN TIEMPO REAL
 // ==========================================
 let canchaActual = "";
-let fechaActual = new Date(); 
+let fechaActual = new Date();
 let mesVisualizado = fechaActual.getMonth();
 let anioVisualizado = fechaActual.getFullYear();
-let diaSeleccionado = null; 
+let diaSeleccionado = null;
 let horaSeleccionada = null;
-let reservasGlobales = []; // Ahora la llenará Firebase
+let reservasGlobales = [];
 
 const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-const horasOperacion = ["16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00"];
 
-// LECTOR EN TIEMPO REAL: Se activa cada vez que alguien hace o borra una reserva en cualquier parte del mundo
+// Horario de 8:00 AM a 11:00 PM
+const horasOperacion = [
+    "08:00", "09:00", "10:00", "11:00", "12:00", 
+    "13:00", "14:00", "15:00", "16:00", "17:00", 
+    "18:00", "19:00", "20:00", "21:00", "22:00"
+];
+
+// LECTOR EN TIEMPO REAL
 db.collection("reservas").onSnapshot((querySnapshot) => {
     reservasGlobales = [];
     querySnapshot.forEach((doc) => {
         reservasGlobales.push(doc.data());
     });
     
-    // Si un usuario está viendo un día específico, actualizamos los botones al instante
     if (diaSeleccionado) {
         cargarHorariosDisponibles(diaSeleccionado);
     }
@@ -46,6 +48,15 @@ db.collection("reservas").onSnapshot((querySnapshot) => {
 // ==========================================
 // 2. FUNCIONES DE INTERFAZ Y CALENDARIO
 // ==========================================
+function convertirHora12h(hora24) {
+    const [hora, minutos] = hora24.split(':');
+    let h = parseInt(hora);
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12;
+    h = h ? h : 12; // 0 se convierte en 12
+    return `${h}:${minutos} ${ampm}`;
+}
+
 function seleccionarCancha(nombre) {
     canchaActual = nombre;
     document.getElementById("nombre-cancha-seleccionada").innerText = nombre;
@@ -66,8 +77,8 @@ function generarCalendario(mes, anio) {
     contenedorDias.innerHTML = "";
     document.getElementById("mes-anio").innerText = `${meses[mes]} ${anio}`;
 
-    const primerDia = new Date(anio, mes, 1).getDay(); 
-    const diasEnMes = new Date(anio, mes + 1, 0).getDate(); 
+    const primerDia = new Date(anio, mes, 1).getDay();
+    const diasEnMes = new Date(anio, mes + 1, 0).getDate();
     
     for (let i = 0; i < primerDia; i++) {
         const divVacio = document.createElement("div");
@@ -76,7 +87,7 @@ function generarCalendario(mes, anio) {
     }
 
     const hoy = new Date();
-    hoy.setHours(0,0,0,0); 
+    hoy.setHours(0,0,0,0);
 
     for (let i = 1; i <= diasEnMes; i++) {
         const divDia = document.createElement("div");
@@ -110,7 +121,7 @@ function cambiarMes(direccion) {
 
 function seleccionarDia(fechaString, elementoDia) {
     diaSeleccionado = fechaString;
-    horaSeleccionada = null; 
+    horaSeleccionada = null;
 
     const todosLosDias = document.querySelectorAll('.dia');
     todosLosDias.forEach(d => d.classList.remove('seleccionado'));
@@ -129,11 +140,11 @@ function cargarHorariosDisponibles(fecha) {
 
     horasOperacion.forEach(hora => {
         const btnHora = document.createElement("button");
-        btnHora.innerText = `${hora} - ${parseInt(hora)+1}:00`;
+        const horaFin = String(parseInt(hora) + 1).padStart(2, '0') + ":00";
+        btnHora.innerText = `${convertirHora12h(hora)} - ${convertirHora12h(horaFin)}`;
         
         const idReserva = `${canchaActual}_${fecha}_${hora}`;
 
-        // Verificamos contra la memoria global que mantiene Firebase
         if (reservasGlobales.some(r => r.bloqueo === idReserva)) {
             btnHora.classList.add("hora-btn", "ocupada");
             btnHora.disabled = true;
@@ -169,7 +180,6 @@ document.getElementById("form-confirmacion").addEventListener("submit", async fu
     let idUnico = generarIdReserva();
     let idBloqueo = `${canchaActual}_${diaSeleccionado}_${horaSeleccionada}`;
 
-    // Doble verificación: comprobar que no se reservó en los últimos milisegundos
     if (reservasGlobales.some(r => r.bloqueo === idBloqueo)) {
         alert("Lo sentimos, alguien acaba de reservar este turno.");
         cargarHorariosDisponibles(diaSeleccionado);
@@ -184,7 +194,7 @@ document.getElementById("form-confirmacion").addEventListener("submit", async fu
         hora: horaSeleccionada,
         cliente: nombre,
         estado: "Confirmada",
-        creadoEn: firebase.firestore.FieldValue.serverTimestamp() // Sello de tiempo de Google
+        creadoEn: firebase.firestore.FieldValue.serverTimestamp()
     };
 
     try {
@@ -192,7 +202,6 @@ document.getElementById("form-confirmacion").addEventListener("submit", async fu
         btn.disabled = true;
         btn.innerText = "Procesando...";
 
-        // Insertar documento en la colección 'reservas' usando el idUnico como nombre de archivo
         await db.collection("reservas").doc(idUnico).set(nuevaReserva);
 
         const fb = document.getElementById("mensaje-feedback");

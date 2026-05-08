@@ -4,17 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eurosoccer | Reservas</title>
+    <link rel="icon" type="image/jpeg" href="img/logo.jpg">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <header class="hero">
+        <div class="logo-container">
+            <img src="img/logo.jpg" alt="Eurosoccer Logo" class="logo-img">
+        </div>
         <div class="hero-content">
-            <h1>EUROSOCCER PENE</h1>
+            <h1>EUROSOCCER</h1>
             <p class="tagline">¡Dónde el fútbol es pasión!</p>
+            <p class="categoria">Campo de fútbol</p>
             <div class="contact-info">
-                <span>📍 San Martín, El Salvador</span> | 
-                <span>📞 7855 4341</span> | 
+                <span>📍 Carretera de oro, San Martín, El Salvador</span>
+                <span>📞 +503 7855 4341</span>
                 <a href="http://eurosoccer.com.sv" target="_blank">eurosoccer.com.sv</a>
             </div>
         </div>
@@ -25,17 +29,17 @@
             <h2>Nuestras Instalaciones</h2>
             <div class="cancha-cards">
                 <div class="card">
-                    <div class="placeholder-img">📷 Foto 11v11</div>
+                    <img src="img/11.webp" alt="Cancha Principal 11v11" class="cancha-img">
                     <h3>Cancha Principal</h3>
                     <p>Fútbol 11. Espacio amplio para ligas y torneos oficiales.</p>
                 </div>
                 <div class="card">
-                    <div class="placeholder-img">📷 Foto 7v7 A</div>
+                    <img src="img/7A.webp" alt="Cancha 7v7 A" class="cancha-img">
                     <h3>Cancha 7v7 (A)</h3>
                     <p>Grama sintética de alta calidad y excelente iluminación.</p>
                 </div>
                 <div class="card">
-                    <div class="placeholder-img">📷 Foto 7v7 B</div>
+                    <img src="img/7B.webp" alt="Cancha 7v7 B" class="cancha-img">
                     <h3>Cancha 7v7 (B)</h3>
                     <p>Ideal para partidos rápidos entre amigos después del trabajo.</p>
                 </div>
@@ -81,6 +85,7 @@
 
                 <div class="horas-container">
                     <h3>Horarios para el <span id="fecha-seleccionada">...</span></h3>
+                    <p class="horario-info">Horario: 8:00 AM - 11:00 PM</p>
                     <p class="precio-nota">Precio por hora: <strong>$20.00</strong></p>
                     <div id="grid-horas" class="grid-horas">
                         <p class="instruccion">Selecciona un día en el calendario para ver las horas.</p>
@@ -97,7 +102,6 @@
     </main>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
-    
     <script src="app.js"></script>
 </body>
 </html>

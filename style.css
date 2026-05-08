@@ -249,3 +249,66 @@ input {
 .btn-confirmar:hover { background-color: var(--accent-hover); color: white;}
 
 #mensaje-feedback { margin-top: 15px; font-weight: bold; }
+
+/* Agrega esto al CSS existente */
+
+.logo-container {
+    margin-bottom: 20px;
+}
+
+.logo-img {
+    width: 150px;
+    height: auto;
+    border-radius: 50%;
+    border: 3px solid var(--accent-green);
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+}
+
+.categoria {
+    color: var(--text-muted);
+    font-size: 1rem;
+    margin-bottom: 15px;
+    font-style: italic;
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+}
+
+.contact-info span {
+    display: block;
+}
+
+.cancha-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    transition: transform 0.3s;
+}
+
+.cancha-img:hover {
+    transform: scale(1.05);
+}
+
+.horario-info {
+    color: var(--accent-green);
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+
+/* Ajuste para más horas en grid */
+.grid-horas {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 600px) {
+    .grid-horas {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
