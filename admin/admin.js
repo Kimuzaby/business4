@@ -40,7 +40,7 @@ document.getElementById("form-login").addEventListener("submit", function(e) {
     e.preventDefault();
     
     // Aquí pon el correo que registraste en la consola de Firebase
-    const email = "admin@eurosoccer.com"; 
+    const email = "erickxavier.caballero@gmail.com"; 
     const pass = document.getElementById("admin-pass").value;
 
     const btn = e.target.querySelector('button');
