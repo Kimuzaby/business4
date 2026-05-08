@@ -26,46 +26,50 @@
 
     <main>
         <section class="canchas-info">
-            <h2>Nuestras Instalaciones</h2>
-            <div class="cancha-cards">
-                <div class="card">
-                    <img src="img/11.webp" alt="Cancha Principal 11v11" class="cancha-img">
-                    <h3>Cancha Principal</h3>
-                    <p>Fútbol 11. Espacio amplio para ligas y torneos oficiales.</p>
-                </div>
-                <div class="card">
-                    <img src="img/7A.webp" alt="Cancha 7v7 A" class="cancha-img">
-                    <h3>Cancha 7v7 (A)</h3>
-                    <p>Grama sintética de alta calidad y excelente iluminación.</p>
-                </div>
-                <div class="card">
-                    <img src="img/7B.webp" alt="Cancha 7v7 B" class="cancha-img">
-                    <h3>Cancha 7v7 (B)</h3>
-                    <p>Ideal para partidos rápidos entre amigos después del trabajo.</p>
-                </div>
-            </div>
-        </section>
+    <h2>Nuestras Instalaciones</h2>
+    <div class="cancha-cards">
+        <div class="card">
+            <img src="img/11.webp" alt="Cancha Principal 11v11" class="cancha-img">
+            <h3>Cancha Principal</h3>
+            <p>Fútbol 11. Espacio amplio para ligas y torneos oficiales.</p>
+            <p class="clic-info">Haz clic en el croquis para reservar</p>
+        </div>
+        <div class="card">
+            <img src="img/7A.webp" alt="Cancha 7v7 A" class="cancha-img">
+            <h3>Cancha 7v7 (A)</h3>
+            <p>Grama sintética de alta calidad y excelente iluminación.</p>
+            <p class="clic-info">Haz clic en el croquis para reservar</p>
+        </div>
+        <div class="card">
+            <img src="img/7B.webp" alt="Cancha 7v7 B" class="cancha-img">
+            <h3>Cancha 7v7 (B)</h3>
+            <p>Ideal para partidos rápidos entre amigos después del trabajo.</p>
+            <p class="clic-info">Haz clic en el croquis para reservar</p>
+        </div>
+    </div>
+</section>
 
         <section class="reserva-interactiva">
-            <h2>Paso 1: Selecciona tu Cancha</h2>
-            <div class="croquis-container">
-                <div class="cancha-sketch grande" onclick="seleccionarCancha('Cancha Principal 11v11')">
-                    <div class="linea-media"></div>
-                    <div class="circulo-central"></div>
-                    <span>Principal 11v11</span>
-                </div>
-                <div class="cancha-sketch pequena" onclick="seleccionarCancha('Cancha 7v7 A')">
-                    <div class="linea-media"></div>
-                    <div class="circulo-central"></div>
-                    <span>7v7 A</span>
-                </div>
-                <div class="cancha-sketch pequena" onclick="seleccionarCancha('Cancha 7v7 B')">
-                    <div class="linea-media"></div>
-                    <div class="circulo-central"></div>
-                    <span>7v7 B</span>
-                </div>
-            </div>
-        </section>
+    <h2>Paso 1: Selecciona tu Cancha</h2>
+    <p class="instruccion-croquis">Haz clic en la cancha que deseas reservar</p>
+    <div class="croquis-container">
+        <div class="cancha-sketch grande" onclick="seleccionarCancha('Cancha Principal 11v11')">
+            <div class="linea-media"></div>
+            <div class="circulo-central"></div>
+            <span>Principal 11v11</span>
+        </div>
+        <div class="cancha-sketch pequena" onclick="seleccionarCancha('Cancha 7v7 B')">
+            <div class="linea-media"></div>
+            <div class="circulo-central"></div>
+            <span>7v7 B</span>
+        </div>
+        <div class="cancha-sketch pequena" onclick="seleccionarCancha('Cancha 7v7 A')">
+            <div class="linea-media"></div>
+            <div class="circulo-central"></div>
+            <span>7v7 A</span>
+        </div>
+    </div>
+</section>
 
         <section id="panel-reserva" class="panel-reserva hidden">
             <h2 id="titulo-panel">Disponibilidad: <span id="nombre-cancha-seleccionada"></span></h2>

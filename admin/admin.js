@@ -89,7 +89,7 @@ function cerrarSesionUI() {
 function escucharReservas() {
     db.collection("reservas").onSnapshot((querySnapshot) => {
         reservasAdminGlobal = [];
-        const tbody = document.getElementById("lista-reservas");
+        const tbody = document.edit-hora("lista-reservas");
         tbody.innerHTML = "";
 
         if (querySnapshot.empty) {
