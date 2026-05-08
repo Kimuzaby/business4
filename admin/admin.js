@@ -26,17 +26,40 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-document.getElementById("form-login").addEventListener("submit", function(e) {
-    e.preventDefault();
-    const pass = document.getElementById("admin-pass").value;
-    if (pass === PASSWORD_ADMIN) {
-        localStorage.setItem("euroAdminLogueado", "true"); 
-        mostrarDashboard();
+// 1. Escuchar si el usuario ya tiene sesión iniciada
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        mostrarDashboard(); // Si ya hay sesión, encendemos la pantalla
     } else {
-        document.getElementById("login-error").classList.remove("hidden");
+        cerrarSesionUI(); // Si no, mostramos el login
     }
 });
 
+// 2. Proceso de Login con Firebase
+document.getElementById("form-login").addEventListener("submit", function(e) {
+    e.preventDefault();
+    
+    // Aquí pon el correo que registraste en la consola de Firebase
+    const email = "admin@eurosoccer.com"; 
+    const pass = document.getElementById("admin-pass").value;
+
+    const btn = e.target.querySelector('button');
+    btn.innerText = "Verificando...";
+
+    // Firebase valida la contraseña en sus servidores
+    firebase.auth().signInWithEmailAndPassword(email, pass)
+        .then((userCredential) => {
+            // El éxito activa automáticamente el onAuthStateChanged de arriba
+            btn.innerText = "Ingresar";
+        })
+        .catch((error) => {
+            document.getElementById("login-error").innerText = "Credenciales incorrectas";
+            document.getElementById("login-error").classList.remove("hidden");
+            btn.innerText = "Ingresar";
+        });
+});
+
+// 3. ESTA SE QUEDA EXACTAMENTE IGUAL
 function mostrarDashboard() {
     document.getElementById("login-section").classList.add("hidden");
     document.getElementById("dashboard-section").classList.remove("hidden");
@@ -48,13 +71,19 @@ function mostrarDashboard() {
     escucharReservas();
 }
 
+// 4. Cerrar sesión en Firebase
 function cerrarSesion() {
-    localStorage.removeItem("euroAdminLogueado"); 
+    firebase.auth().signOut().then(() => {
+        // Al cerrar, el onAuthStateChanged de arriba detecta el cambio y oculta todo
+    });
+}
+
+// 5. Apagar las luces (Ocultar dashboard)
+function cerrarSesionUI() {
     document.getElementById("login-section").classList.remove("hidden");
     document.getElementById("dashboard-section").classList.add("hidden");
     document.getElementById("btn-logout").classList.add("hidden");
 }
-
 // ==========================================
 // 2. LECTURA EN TIEMPO REAL DESDE FIREBASE
 // ==========================================
